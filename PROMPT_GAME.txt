@@ -1,0 +1,83 @@
+Judul: Resident Evil Requiem 3D
+
+Deskripsi singkat:
+Buat sebuah game FPS berbasis web bergaya raycast 2.5D (inspirasi mekanik Wolfenstein 3D) menggunakan JavaScript (ES6+), HTML5 Canvas, dan Web Audio API. Game mengusung nuansa survival-horror dan alur episodik ala Resident Evil generasi modern (alur, pacing, puzzle, dan ketegangan seperti Resident Evil ke-9). Fokus pada performa di browser, kontrol presisi, dan sistem resource-scarcity.
+
+Target deliverable:
+Satu repositori berisi engine raycast modular dan contoh level playable, termasuk:
+- Raycaster renderer (wall slicing, floor/ceiling shading, sprite rendering)
+- Player controller dengan pointer lock dan mouse look
+- Input handler lengkap (keyboard + mouse)
+- Sistem senjata, recoil, reload, dan aim/scope
+- Inventory sederhana dan item pickup
+- Enemy AI state machine (patrol, alert, chase, attack, flee)
+- Door/interact system dan puzzle triggers
+- Audio ambience, SFX, dan music cues
+- Save/load progress (localStorage)
+- Dokumentasi singkat cara menjalankan dan struktur kode
+
+Kontrol (harus persis):
+- **W** maju
+- **S** mundur
+- **A** geser/strafe kiri
+- **D** geser/strafe kanan
+- **Shift kiri** tahan untuk lari (mengonsumsi stamina; lari mengurangi akurasi)
+- **Space** untuk membuka pintu / interaksi / memeriksa objek
+- **1 2 3 4 5** pilih slot senjata
+- **Mouse** gerakkan kamera (pointer lock)
+- **Mouse 1 (klik kiri)** tembak / primary fire
+- **Mouse 2 (klik kanan)** aim / scope (turunkan FOV, kurangi spread)
+- **R** reload
+- **E** pickup cepat
+- **Tab** buka inventory
+- **Esc** pause/menu
+
+Mekanik gameplay inti:
+- **Engine**: raycast 2.5D dengan sprite-based enemies dan billboarding; collision grid-based.
+- **Senjata**: tiap senjata punya damage, fireRate, magSize, reloadTime, recoil, spread, range; aim mengurangi spread; lari menambah spread; recoil memengaruhi aim vertikal.
+- **Amunisi & resource**: beberapa tipe amunisi; medkit dan item penyembuh langka; inventory terbatas (slot atau berat).
+- **Stamina**: dipakai untuk lari; regenerasi lambat saat diam.
+- **AI**: deteksi berbasis jarak + line-of-sight raycast; state transitions (patrol → alert → chase → attack → search → return); suara dan cahaya memicu alert.
+- **Teka-teki**: kunci pintu (keycards), switch, kombinasi item; ruangan gelap memerlukan sumber cahaya; puzzle memanfaatkan peta dan dokumen.
+- **Pintu & Interaksi**: pintu bisa dikunci, rusak, atau membutuhkan power; Space memicu animasi buka/close dan cek kondisi.
+- **Boss & encounter**: boss dengan fase, pola serangan, weak points, dan arena khusus.
+- **Audio & ambience**: spatial SFX, footsteps, enemy growls, ambience zones, music stings untuk tension.
+
+Alur & struktur level:
+- Struktur episodik: Prolog (tutorial) → Episode 1 (laboratorium bawah) → Episode 2 (koridor administrasi) → Episode 3 (inti penelitian) → Final Episode (konfrontasi).
+- Pacing: campuran eksplorasi, puzzle, dan combat; sisipkan momen tenang untuk membangun ketegangan.
+- Objective system: primary objectives per episode + optional side objectives dan dokumen lore.
+
+Teknis & arsitektur:
+- **Stack**: Vanilla JS (ES6 modules), HTML5 Canvas, Web Audio API. Build optional dengan bundler (esbuild/webpack) tapi kode harus runnable tanpa server khusus.
+- **Game loop**: fixed timestep update + interpolation render.
+- **Input**: pointer lock API; fallback keyboard-only mode.
+- **Optimasi**: spatial partitioning grid untuk collision/AI; sprite batching; cap draw calls; LOD untuk sprite distance.
+- **Assets**: gunakan placeholder pixel art / low-res sprites; struktur asset mudah diganti; semua aset harus berlisensi bebas atau original.
+- **Config**: JSON untuk weapon stats, enemy stats, map layout, and spawn tables.
+- **Testing**: include at least one sample map demonstrating doors, puzzles, multiple enemy types, and a mini-boss.
+
+UX & UI:
+- Crosshair that changes when aiming, reloading, or low ammo.
+- HUD: health, stamina, current weapon + ammo, selected item, minimap toggle (optional).
+- Inventory screen grid; item descriptions and use/equip actions.
+- Pause menu with save/load and settings (sensitivity, invert Y, volume).
+
+Deliverable teknis minimal yang harus disertakan:
+1. `index.html`, `style.css`, `src/` dengan modul JS terpisah (raycaster.js, player.js, input.js, enemy.js, weapons.js, ui.js, audio.js, mapLoader.js).
+2. Contoh map file JSON dan beberapa sprite placeholder.
+3. README dengan instruksi menjalankan lokal (bisa via simple HTTP server) dan penjelasan arsitektur.
+4. Demo playable di browser (local).
+
+Catatan implementasi singkat untuk developer:
+- Pastikan pointer lock dan mouse sensitivity dapat dikonfigurasi.
+- Implementasikan sistem aim yang menurunkan FOV dan spread, serta toggle hold-to-aim.
+- Recoil harus terasa nyata: vertical kick + gradual recovery.
+- Enemy hit detection via raycast bullets for hitscan; implement projectile system untuk roket/grenade.
+- Resource scarcity: atur spawn dan loot agar pemain harus memilih kapan bertarung atau menghindar.
+- Buat modul AI yang mudah diperluas untuk menambah varian musuh.
+
+Instruksi akhir untuk AI/developer:
+Buat prototype playable 10–15 menit yang menunjukkan semua mekanik inti (movement, aim, shoot, reload, weapon swap, door interaction, simple puzzle, 3 enemy types, mini-boss). Sertakan komentar kode yang jelas dan file konfigurasi untuk tuning balance.
+
+Gunakan nama proyek: "Resident Evil Requiem 3D" (sesuaikan jika diperlukan untuk rilis komersial).
